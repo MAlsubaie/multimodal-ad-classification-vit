@@ -2,7 +2,7 @@
 
 ## 📋 Abstract
 
-This research introduces **BiFPN3DViT**, a novel hybrid architecture that integrates Bi-Directional Feature Pyramid Networks (BiFPN) with Vision Transformers (ViT) for 3D volumetric medical image classification. The model addresses the challenges of Alzheimer's disease detection from brain MRI scans by combining multi-scale feature extraction through BiFPN with global attention mechanisms of transformers. Our approach demonstrates state-of-the-art performance on the Alzheimer's Disease Neuroimaging Initiative (ADNI) dataset, achieving superior accuracy, AUC, precision, and recall compared to existing CNN-based methods for multi-class classification (CN, MCI, AD).
+Alzheimer’s disease (AD) classification from structural magnetic resonance imaging (MRI) remains an important yet challenging task, especially for distinguishing mild cognitive impairment (MCI) from both cognitively normal (CN) ageing and established AD. Multimodal approaches that combine imaging with clinical information have shown promise, but their integration strategies often underuse potentially complementary information. We developed a multimodal deep learning model that integrates 3D T1-weighted MRI with routinely collected clinical biomarkers for three-class classification of CN, MCI, and AD cases. The model was evaluated using ADNI 1.5T data with subject-wise train, validation, and test splits, ensuring that repeated scans from the same individual were not distributed across partitions. On the held-out test set, the model achieved 95.68\% accuracy, 95.39\% macro precision, 94.65\% macro recall, and 95.01\% macro F1-score, exceeding the performance of reproduced comparison methods evaluated under the same protocol. In addition, prediction uncertainty was higher for misclassified cases, and selective rejection of the most uncertain cases improved retained-set accuracy to 98.31\% at 85.03\% coverage. The results indicate that integrating structural MRI with clinical biomarkers can improve AD classification performance and provide confidence information that may be useful for decision support in clinical research settings.
 
 ### Key Contributions:
 - **Unified Architecture**: Seamlessly integrates BiFPN's efficient multi-scale feature fusion with ViT's global attention
@@ -31,14 +31,16 @@ This research introduces **BiFPN3DViT**, a novel hybrid architecture that integr
 
 ### Setup
 ```bash
-git clone https://github.com/<your-username>/3D-BiFPN-ViT.git
-cd 3D-BiFPN-ViT
+git clone https://github.com/<your-username>/multimodal-ad-classification-vit.git
+cd multimodal-ad-classification-vit
 pip install -r requirements.txt
 ```
 
 ### Data Preparation
 1. Download ADNI dataset from [adni.loni.usc.edu](https://adni.loni.usc.edu/)
-2. Preprocess MRI scans following the pipeline in `utils/preprocessing.py`
+2. Preprocess MRI scans following the pipeline in `utils/preprocessing.py`.
+- Skull Stripping (HD-BET)
+- Cropping to get only Brain Regions (remove black sides).
 3. Create CSV files with paths and labels: `df_train.csv`, `df_val.csv`, `df_test.csv`
 
 ---
