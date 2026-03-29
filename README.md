@@ -5,21 +5,12 @@
 Alzheimer’s disease (AD) classification from structural magnetic resonance imaging (MRI) remains an important yet challenging task, especially for distinguishing mild cognitive impairment (MCI) from both cognitively normal (CN) ageing and established AD. Multimodal approaches that combine imaging with clinical information have shown promise, but their integration strategies often underuse potentially complementary information. We developed a multimodal deep learning model that integrates 3D T1-weighted MRI with routinely collected clinical biomarkers for three-class classification of CN, MCI, and AD cases. The model was evaluated using ADNI 1.5T data with subject-wise train, validation, and test splits, ensuring that repeated scans from the same individual were not distributed across partitions. On the held-out test set, the model achieved 95.68\% accuracy, 95.39\% macro precision, 94.65\% macro recall, and 95.01\% macro F1-score, exceeding the performance of reproduced comparison methods evaluated under the same protocol. In addition, prediction uncertainty was higher for misclassified cases, and selective rejection of the most uncertain cases improved retained-set accuracy to 98.31\% at 85.03\% coverage. The results indicate that integrating structural MRI with clinical biomarkers can improve AD classification performance and provide confidence information that may be useful for decision support in clinical research settings.
 
 ### Key Contributions:
-- **Unified Architecture**: Seamlessly integrates BiFPN's efficient multi-scale feature fusion with ViT's global attention
-- **3D Specialization**: Optimized for volumetric data with 3D convolutions and spatial attention
-- **Class Imbalance Handling**: Implements Focal Loss with attention pooling for robust classification
-- **Computational Efficiency**: Uses Flash Attention and stochastic depth for scalable training
+
 
 ---
 
 ## 🚀 Features
-- 3D Convolutional feature extraction with BiFPN fusion
-- Multi-head self-attention with Flash Attention support
-- Focal Loss for class imbalance
-- Training, validation, and test loops with rich metrics (Accuracy, AUC, Precision, Recall)
-- Configurable via `config.py`
-- Built-in data preprocessing pipelines
-- Comprehensive evaluation with confusion matrices and classification reports
+
 
 ---
 
@@ -48,45 +39,24 @@ pip install -r requirements.txt
 ## 🏗️ Model Architecture
 
 ### Overview
-The BiFPN3DViT architecture consists of four main components:
-1. **3D Patch Embedding** - Multi-scale convolutional feature extraction
-2. **BiFPN Block** - Efficient multi-scale feature fusion
-3. **Transformer Encoder** - Global attention mechanism
-4. **Classification Head** - Dual representation learning
+
 
 ### Detailed Components
 
 #### 1. 3D Patch Embedding
-- **Input**: 128×128×128×1 brain MRI volumes
-- **Multi-stage CNN**: 7 convolutional blocks with increasing channels (16→32→64→128→256→512→384)
-- **Output**: 5 feature maps at different scales for BiFPN fusion
+
 
 #### 2. BiFPN (Bi-Directional Feature Pyramid Network)
-- **Top-down pathway**: Upsampling and fusion from high-level to low-level features
-- **Bottom-up pathway**: Downsampling and fusion from low-level to high-level features
-- **Fusion strategy**: Weighted feature combination with 1×1×1 convolutions
-- **Output**: Unified 8×8×8×384 feature representation
+
 
 #### 3. Vision Transformer Encoder
-- **Sequence length**: 8×8×8 = 512 patches + 1 CLS token
-- **Hidden dimension**: 384
-- **Attention heads**: 8
-- **Layers**: 8 transformer blocks
-- **Advanced features**:
-  - Flash Attention for memory efficiency
-  - Stochastic depth for regularization
-  - Layer normalization and dropout
+
 
 #### 4. Classification Head
-- **Dual representation**: CLS token + attention-pooled patch features
-- **Classifier**: 2-layer MLP (768→384→3) with NewGELU activation
-- **Loss function**: Focal Loss (α=1.0, γ=2.0) for class imbalance
+
 
 ### Key Innovations
-- **3D BiFPN**: Adapted BiFPN for volumetric data with 3D operations
-- **Hybrid Design**: CNN feature extraction + Transformer attention
-- **Memory Efficient**: Flash Attention and gradient checkpointing
-- **Robust Training**: Focal loss, stochastic depth, and proper initialization
+
 
 ---
 
@@ -135,7 +105,7 @@ python test.py --model_path weights_finalized/best_model.pth
 ```
 
 ### Jupyter Notebook
-Explore the complete implementation in `jupyter_notebook/3D CNN-ViT_BiFPN_Final.ipynb`:
+Explore the complete implementation in `jupyter_notebook/3D ViT_Final.ipynb`:
 - Interactive model visualization
 - Training progress monitoring
 - Performance analysis and plotting
@@ -153,7 +123,7 @@ enhanced_config = {
     "num_hidden_layers": 8,      # Number of transformer layers
     "num_attention_heads": 8,    # Multi-head attention heads
     "conv_channels": [16, 32, 64, 128, 256, 512],  # CNN channels
-    "bifpn_channels": [64, 128, 256, 512, 384],    # BiFPN fusion channels
+    "bifpn_channels": [64, 128, 256, 512, 384],    # fusion channels
     "focal_alpha": 1.0,          # Focal loss alpha
     "focal_gamma": 2.0,          # Focal loss gamma
     "stochastic_depth": 0.4,     # Drop path probability
@@ -165,14 +135,14 @@ enhanced_config = {
 ## 📁 Project Structure
 
 ```
-3D-BiFPN-ViT/
+3D--ViT/
 │
 ├── config.py                    # Model configuration
 ├── train.py                     # Training script
 ├── test.py                      # Evaluation script
 ├── models/
 │   ├── __init__.py
-│   └── model.py                 # BiFPN3DViT architecture
+│   └── model.py                 #  architecture
 ├── datasets/
 │   ├── __init__.py
 │   └── custom_dataset.py        # ADNI dataset loader
@@ -181,7 +151,7 @@ enhanced_config = {
 │   ├── preprocessing.py         # Data preprocessing
 │   └── plotting.py              # Visualization utilities
 ├── jupyter_notebook/
-│   └── 3D CNN-ViT_BiFPN_Final.ipynb  # Complete implementation
+│   └── 3D CNN-ViT_Final.ipynb  # Complete implementation
 ├── requirements.txt             # Python dependencies
 └── README.md                    # This file
 ```
@@ -192,13 +162,7 @@ enhanced_config = {
 
 If you use this codebase in your research, please cite:
 
-```bibtex
-@article{bifpn3dvit2024,
-  title={BiFPN3DViT: A Unified 3D Vision Transformer with BiFPN for Brain MRI Classification},
-  author={Your Name and Co-authors},
-  journal={arXiv preprint arXiv:XXXX.XXXXX},
-  year={2024}
-}
+
 ```
 
 ---
