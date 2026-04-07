@@ -43,19 +43,7 @@ pip install -r requirements.txt
 
 ### Detailed Components
 
-#### 1. 3D Patch Embedding
 
-
-#### 2. BiFPN (Bi-Directional Feature Pyramid Network)
-
-
-#### 3. Vision Transformer Encoder
-
-
-#### 4. Classification Head
-
-
-### Key Innovations
 
 
 ---
@@ -70,7 +58,7 @@ pip install -r requirements.txt
   - MCI (Mild Cognitive Impairment): 1  
   - AD (Alzheimer's Disease): 2
 - **Image dimensions**: 128×128×128 voxels
-- **Preprocessing**: N4 bias correction, skull stripping, normalization
+- **Preprocessing**: N4 bias correction, skull stripping, normalisation
 - **Split**: Train/Val/Test with balanced class distribution
 
 ---
@@ -105,7 +93,6 @@ python test.py --model_path weights_finalized/best_model.pth
 ```
 
 ### Jupyter Notebook
-Explore the complete implementation in `jupyter_notebook/3D ViT_Final.ipynb`:
 - Interactive model visualization
 - Training progress monitoring
 - Performance analysis and plotting
