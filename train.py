@@ -64,11 +64,11 @@ def train_one_epoch(model, dataloader, optimizer, metrics, device):
     epoch_loss, epoch_acc, epoch_prec, epoch_reca, epoch_auc = 0.0, 0.0, 0.0, 0.0, 0.0
 
     progress = tqdm(dataloader, desc="Training", leave=False)
-    for images, labels in progress:
-        images, labels = images.to(device), labels.to(device)
+    for images, biomarkers, labels in progress:
+        images, biomarkers, labels = images.to(device), biomarkers.to(device), labels.to(device)
         optimizer.zero_grad()
 
-        outputs = model(images)
+        outputs = model(images, biomarkers)
         logits = outputs[0] if isinstance(outputs, tuple) else outputs
         loss = model.compute_loss(logits, labels)
         loss.backward()
@@ -101,9 +101,9 @@ def validate_one_epoch(model, dataloader, metrics, device):
 
     progress = tqdm(dataloader, desc="Validation", leave=False)
     with torch.no_grad():
-        for images, labels in progress:
-            images, labels = images.to(device), labels.to(device)
-            outputs = model(images)
+        for images, biomarkers, labels in progress:
+            images, biomarkers, labels = images.to(device), biomarkers.to(device), labels.to(device)
+            outputs = model(images, biomarkers)
             logits = outputs[0] if isinstance(outputs, tuple) else outputs
             loss = model.compute_loss(logits, labels)
 
@@ -210,9 +210,9 @@ def main():
     test_loss, test_acc, test_prec, test_reca, test_auc = 0, 0, 0, 0, 0
 
     with torch.no_grad():
-        for images, labels in tqdm(test_loader, desc="Testing"):
-            images, labels = images.to(device), labels.to(device)
-            outputs = model(images)
+        for images, biomarkers, labels in tqdm(test_loader, desc="Testing"):
+            images, biomarkers, labels = images.to(device), biomarkers.to(device), labels.to(device)
+            outputs = model(images, biomarkers)
             logits = outputs[0] if isinstance(outputs, tuple) else outputs
             loss = model.compute_loss(logits, labels)
             preds = torch.argmax(logits, dim=1)

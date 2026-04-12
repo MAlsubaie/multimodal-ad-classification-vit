@@ -1,31 +1,23 @@
-# --- Enhanced Configuration ---
+# --- Biomarker-Conditioned ViT Configuration ---
 enhanced_config = {
     # Basic model parameters
     "image_size": 128,
+    "patch_size": 16,
     "num_channels": 1,
     "num_classes": 3,
-    "hidden_size": 384,
-    "num_hidden_layers": 8,
-    "num_attention_heads": 8,
-    "intermediate_size": 768,
+    "num_biomarkers": 5,
     
-    # Dropout and regularization
-    "hidden_dropout_prob": 0.4,
-    "attention_probs_dropout_prob": 0.4,
-    "stochastic_depth": 0.4,
+    # Transformer parameters
+    "hidden_size": 768,          # embed_dim in the model
+    "num_hidden_layers": 12,     # depth
+    "num_attention_heads": 12,
+    "mlp_ratio": 4.0,
     
-    # Convolutional feature extraction
-    "conv_channels": [16, 32, 64, 128, 256, 512],
-    "bifpn_channels": [64, 128, 256, 512, 384],
+    # Regularization
+    "dropout": 0.1,
     
-    # Loss function parameters
-    "focal_alpha": 1.0,
-    "focal_gamma": 2.0,
+    # Biomarker Conditioning Layers
+    "conditioning_layers": [4, 5, 6, 7, 8, 9, 10, 11],
     
-    # Training parameters
-    "initializer_range": 0.02,
-    "qkv_bias": True,
-    "classifier_hidden": 768,
-    
-    "model_name": "BiFPN3DViT",
+    "model_name": "BiomarkerConditionedViT",
 }

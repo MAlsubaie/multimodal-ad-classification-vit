@@ -80,10 +80,10 @@ def main():
     all_preds, all_labels = [], []
 
     with torch.no_grad():
-        for images, labels in tqdm(test_loader, desc="Testing"):
-            images, labels = images.to(device), labels.to(device)
+        for images, biomarkers, labels in tqdm(test_loader, desc="Testing"):
+            images, biomarkers, labels = images.to(device), biomarkers.to(device), labels.to(device)
 
-            outputs = model(images)
+            outputs = model(images, biomarkers)
             logits = outputs[0] if isinstance(outputs, tuple) else outputs
             loss = model.compute_loss(logits, labels)
 

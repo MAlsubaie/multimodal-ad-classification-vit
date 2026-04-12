@@ -9,6 +9,13 @@ class CustomDataset(Dataset):
         self.image_paths = self.df['ADNI_path'].values
         self.labels = self.df['Group'].values
 
+        # Select 5 biomarkers (numerical) and fill NaNs with 0
+        biomarker_cols = ['Age_x', 'MMSE Total Score', 'GDSCALE Total Score', 'Global CDR', 'FAQ Total Score']
+        for col in biomarker_cols:
+            if col not in self.df.columns:
+                self.df[col] = 0.0
+        self.biomarkers = self.df[biomarker_cols].fillna(0.0).values.astype(np.float32)
+
         # Binary classification mapping
         self.label_names = {'CN': 0, 'AD': 1, "MCI": 2}
         self.num_classes = len(self.label_names)
@@ -33,18 +40,19 @@ class CustomDataset(Dataset):
         try:
             image_path = self.image_paths[idx]
             label = self.labels_binary[idx]
+            biomarker = torch.tensor(self.biomarkers[idx], dtype=torch.float32)
 
             image_tensor = torch.load(image_path)
 
             if image_tensor.shape!= (1, 128, 128,128):
                 image_tensor  = image_tensor.unsqueeze(0)
 
-            return image_tensor, label
+            return image_tensor, biomarker, label
         
         except Exception as e:
             print(f"Exception in processing image {image_path}: {e}")
-            return None, None
+            return None, None, None
 
     def __getitem__(self, idx):
-        img, lbl = self.process_image(idx)
-        return img, lbl
+        img, bio, lbl = self.process_image(idx)
+        return img, bio, lbl
